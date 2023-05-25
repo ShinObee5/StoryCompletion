@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.17/dist/tailwind.min.css" rel="stylesheet">
+    <title>Story Generator</title>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto">
+        <!-- Input forms for user preferences -->
+        <div id="input-form" class="p-4">
+            <form id="story-form" onsubmit="generateStory(event)">
+                <div class="mt-4">
+                    <label for="story-details" class="block">Story Details:</label>
+                    <textarea id="story-details" class="block w-full bg-gray-800 text-white mt-1 p-2"></textarea>
+                </div>
+                <div class="mt-4">
+                    <label for="genre" class="block">Genre:</label>
+                    <select id="genre" class="block w-full bg-gray-800 text-white mt-1 p-2">
+                        <option value="sci-fi">Science Fiction</option>
+                        <option value="fantasy">Fantasy</option>
+                        <option value="mystery">Mystery</option>
+                        <option value="romance">Romance</option>
+                        <option value="horror">Horror</option>
+                    </select>
+                </div>
+                <div id="characters-container" class="mt-4">
+                    <div class="character-input">
+                        <label for="character1-name" class="block">Character Name:</label>
+                        <input id="character1-name" type="text" class="block w-full bg-gray-800 text-white mt-1 p-2">
+                        <label for="character1-sex" class="block mt-2">Character Sex:</label>
+                        <select id="character1-sex" class="block w-full bg-gray-800 text-white mt-1 p-2">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label for="reader-age" class="block">Reader Age:</label>
+                    <input id="reader-age" type="number" min="1" value="18" class="block w-full bg-gray-800 text-white mt-1 p-2">
+                </div>
+                <button type="submit" class="mt-4 bg-purple-500 hover:bg-purple-600 px-4 py-2 text-white">Generate Story</button>
+            </form>
+        </div>
+        <!-- Display area for the generated story -->
+        <div id="story-display" class="mt-4 p-4">
+            <h2 class="text-2xl font-bold mb-4">Generated Story:</h2>
+            <div id="generated-story" class="bg-gray-800 p-4 rounded text-white whitespace-pre-wrap">
+                <!-- The generated story will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateStory(event) {
+            event.preventDefault();
+
+            // Collect user input values
+            const storyDetails = document.getElementById('story-details').value;
+            const genre = document.getElementById('genre').value;
+            const characterName = document.getElementById('character1-name').value;
+            const characterSex = document.getElementById('character1-sex').value;
+            const readerAge = document.getElementById('reader-age').value;
+
+            // Create the prompt using the collected data
+            let prompt = `You are an expert story writer. You make captivating stories that peak the readers interest. I will give you certain details. Your job is to use these details and complete the story. You will output the complete story. Here is what I want in the story . Story begins by: ${storyDetails}\n`;
+            prompt += `You will write a story in this genre. Genre: ${genre}\n`;
+            prompt += `You will refer to the character with this name. Character Name: ${characterName}\n`;
+            prompt += `This is the sex of the character.Character Sex: ${characterSex}\n`;
+            prompt += `Now write a story with the target audience of this age group in mind .Reader Age: ${readerAge}\n`;
+
+            // Call the backend Flask API to generate the story
+            fetch('/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt: prompt })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const generatedStory = data.story;
+                document.getElementById('generated-story').textContent = generatedStory;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
