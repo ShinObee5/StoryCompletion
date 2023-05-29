@@ -1,194 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.17/dist/tailwind.min.css" rel="stylesheet">
     <title>Story Generator</title>
     <style>
-        /* ...existing styles... */
-    
-        #generated-stories {
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1f1f1f;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
+            margin-bottom: 20px;
         }
-    
-        .story-box {
+
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #252525;
+            color: #fff;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
             cursor: pointer;
-            background-color: transparent;
-            border: 1px solid white;
-            color: white;
-            padding: 16px;
-            margin-bottom: 16px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
+            font-size: 16px;
         }
-    
+
+        #story-display {
+            text-align: center;
+        }
+
+        .story-box {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
         .story-box:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.3);
         }
-    
+
         .expanded-story {
             display: none;
-            white-space: pre-wrap;
-            background-color: transparent;
-            color: white;
-            padding: 16px;
-            margin-bottom: 16px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .expanded-story.active {
+            display: block;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            text-align: center;
         }
     </style>
-    
-    
 </head>
-<body class="bg-gray-900 text-white">
-    <div class="container mx-auto">
-        <!-- Input form for user preferences -->
-        <div id="input-form" class="p-4">
-            <form id="story-form">
-                <div>
-                    <label for="story-details" class="block">Story Details:</label>
-                    <textarea id="story-details" class="block w-full bg-gray-800 text-white mt-1 p-2" required></textarea>
-                </div>
-                <div class="mt-4">
-                    <label for="genre" class="block">Genre:</label>
-                    <select id="genre" name="genre" class="block w-full bg-gray-800 text-white mt-1 p-2">
-                        <option value="sci-fi">Science Fiction</option>
-                        <option value="fantasy">Fantasy</option>
-                        <option value="mystery">Mystery</option>
-                        <option value="romance">Romance</option>
-                        <option value="horror">Horror</option>
-                    </select>
-                </div>
-                <div id="characters-container" class="mt-4">
-                    <div class="character-input">
-                        <label for="character1-name" class="block">Character 1 Name:</label>
-                        <input id="character1-name" name="character1-name" type="text" class="block w-full bg-gray-800 text-white mt-1 p-2">
-                        <label for="character1-sex" class="block mt-2">Character 1 Sex:</label>
-                        <select id="character1-sex" name="character1-sex" class="block w-full bg-gray-800 text-white mt-1 p-2">
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <label for="reader-age" class="block">Reader Age:</label>
-                    <input id="reader-age" name="reader-age" type="number" min="1" value="18" class="block w-full bg-gray-800 text-white mt-1 p-2">
-                </div>
-                <button type="submit" class="mt-4 bg-purple-500 hover:bg-purple-600 px-4 py-2 text-white">Generate Story</button>
-            </form>
-        </div>
 
-        <!-- Display area for the generated stories -->
-        <div id="story-display" class="mt-4 p-4">
-            <h2 class="text-2xl font-bold mb-4">Generated Stories:</h2>
-            <div id="generated-stories" class="flex justify-center items-center flex-wrap gap-4">
-                <!-- The generated stories will be displayed here -->
+<body>
+    <div class="container">
+        <h1>Story Generator</h1>
+        <form id="story-form">
+            <div>
+                <label for="story-details">Story Details:</label>
+                <input type="text" id="story-details" name="story-details" required>
             </div>
-        </div>
+            <div>
+                <label for="genre">Genre:</label>
+                <input type="text" id="genre" name="genre">
+            </div>
+            <div>
+                <label for="character1-name">Character 1 Name:</label>
+                <input type="text" id="character1-name" name="character1-name">
+            </div>
+            <div>
+                <label for="character1-sex">Character 1 Sex:</label>
+                <input type="text" id="character1-sex" name="character1-sex">
+            </div>
+            <div>
+                <label for="reader-age">Reader Age:</label>
+                <input type="number" id="reader-age" name="reader-age" min="1" value="18">
+            </div>
+            <button type="submit">Generate Story</button>
+        </form>
+        <div id="story-display"></div>
+    </div>
 
-        <script>
-            const form = document.getElementById('story-form');
-            const storyDisplay = document.getElementById('story-display');
-            const generatedStories = document.getElementById('generated-stories');
+    <script>
+        const form = document.getElementById('story-form');
+        const storyDisplay = document.getElementById('story-display');
 
-            form.addEventListener('submit', (event) => {
-                event.preventDefault();
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const requestData = Object.fromEntries(formData.entries());
 
-                // Collect form data
-                const storyDetails = document.getElementById('story-details').value;
-                const genre = document.getElementById('genre').value;
-                const characterName = document.getElementById('character1-name').value;
-                const characterSex = document.getElementById('character1-sex').value;
-                const readerAge = document.getElementById('reader-age').value;
-
-                // Send the data to the server
-                fetch('/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        'story-details': storyDetails,
-                        'genre': genre,
-                        'character1-name': characterName,
-                        'character1-sex': characterSex,
-                        'reader-age': readerAge
-                    })
-                })
+            fetch('/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
                 .then(response => response.json())
                 .then(data => {
-                    // Display the generated stories
                     displayStories(data.stories);
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
-            });
-
-            function displayStories(stories) {
-    // Clear the existing stories
-    generatedStories.innerHTML = '';
-
-    // Create story elements
-    stories.forEach((story, index) => {
-        const storyBox = document.createElement('div');
-        storyBox.classList.add('story-box');
-        storyBox.textContent = `Story ${index + 1}`;
-
-        storyBox.addEventListener('click', () => {
-            toggleExpandedView(storyBox, story);
         });
 
-        generatedStories.appendChild(storyBox);
-    });
+        function displayStories(stories) {
+            storyDisplay.innerHTML = '';
 
-    // Show the story display section
-    storyDisplay.style.display = 'block';
+            stories.slice(0, 3).forEach((story, index) => {
+                const storyBox = document.createElement('div');
+                storyBox.classList.add('story-box');
+                storyBox.textContent = `Story ${index + 1}`;
 
-    // Scroll to the story display section
-    storyDisplay.scrollIntoView({ behavior: 'smooth' });
+                storyBox.addEventListener('click', () => {
+                    toggleExpandedView(storyBox, story);
+                });
 
-    // Hide the expanded story view (if any)
-    hideExpandedStory();
-}
+                storyDisplay.appendChild(storyBox);
+            });
 
-function toggleExpandedView(storyBox, story) {
-    const expandedStoryClass = 'expanded-story';
+            storyDisplay.scrollIntoView({ behavior: 'smooth' });
+        }
 
-    // Remove the expanded class from other story boxes
-    const otherStoryBoxes = Array.from(generatedStories.children).filter(el => el !== storyBox);
-    otherStoryBoxes.forEach(el => el.classList.remove(expandedStoryClass));
+        function toggleExpandedView(storyBox, story) {
+            const expandedStoryClass = 'expanded-story';
+            const expandedStoryElement = document.createElement('div');
+            expandedStoryElement.classList.add(expandedStoryClass);
+            expandedStoryElement.innerHTML = `<p>${story}</p><button class="back-button" onclick="toggleExpandedView(this.parentElement.parentElement, '')">Go Back</button>`;
 
-    // Toggle the expanded class on the clicked story box
-    storyBox.classList.toggle(expandedStoryClass);
-
-    // Update the expanded story text
-    const expandedStoryElement = document.createElement('div');
-    expandedStoryElement.classList.add(expandedStoryClass);
-    expandedStoryElement.textContent = story;
-
-    // Replace the existing expanded story element (if any) with the new one
-    const existingExpandedStory = generatedStories.querySelector(`.${expandedStoryClass}`);
-    if (existingExpandedStory) {
-        generatedStories.replaceChild(expandedStoryElement, existingExpandedStory);
-    } else {
-        generatedStories.appendChild(expandedStoryElement);
-    }
-}
-
-function hideExpandedStory() {
-    const expandedStoryElement = generatedStories.querySelector('.expanded-story');
-    if (expandedStoryElement) {
-        expandedStoryElement.classList.remove('expanded-story');
-    }
-}
-
-        </script>
-    </div>
+            const existingExpandedStory = storyBox.querySelector(`.${expandedStoryClass}`);
+            if (existingExpandedStory) {
+                existingExpandedStory.remove();
+            } else {
+                const activeExpandedStory = storyDisplay.querySelector(`.${expandedStoryClass}.active`);
+                if (activeExpandedStory) {
+                    activeExpandedStory.classList.remove('active');
+                }
+                storyBox.appendChild(expandedStoryElement);
+                expandedStoryElement.classList.add('active');
+            }
+        }
+    </script>
 </body>
+
 </html>

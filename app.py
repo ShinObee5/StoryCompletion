@@ -26,7 +26,7 @@ def generate():
     # Generate three stories using OpenAI
     stories = []
     # Generate three versions of the story
-    story = f"{story_details}\n\nGenre: {genre}\n\nCharacter: {character_name}, {character_sex}\n\nReader Age: {reader_age}\n"
+    story = f"Complete this story: {story_details}\n\nGenre: {genre}\n\nCharacter: {character_name}, {character_sex}\n\nReader Age: {reader_age}\n"
 
     generated_stories = []
 
