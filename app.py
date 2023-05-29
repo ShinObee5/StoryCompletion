@@ -6,7 +6,7 @@ import openai
 app = Flask(__name__)
 
 
-# Load your API key from an environment variable or secret management service
+# Paste your API KEY HERE
 openai.api_key = "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"
 
 
@@ -26,7 +26,7 @@ def generate():
     # Generate three stories using OpenAI
     stories = []
     # Generate three versions of the story
-    story = f"Complete this story: {story_details}\n\nGenre: {genre}\n\nCharacter: {character_name}, {character_sex}\n\nReader Age: {reader_age}\n"
+    story = f"You are an expert storywriter . You write exciting and captivating stories which are relevant for the reader. Use these details to write a story {story_details}\n\nGenre: {genre}\n\nCharacter: {character_name}, {character_sex}\n\nReader Age: {reader_age}\n"
 
     generated_stories = []
 
