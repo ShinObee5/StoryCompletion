@@ -21,7 +21,7 @@ def generate():
     genre = request.json['genre']
     character_name = request.json['character1-name']
     character_sex = request.json['character1-sex']
-    reader_age = request.json['reader-age']
+    reader_age = request.json['reader-age'] 
 
     # Generate three stories using OpenAI
     stories = []
