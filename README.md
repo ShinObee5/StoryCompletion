@@ -1,7 +1,7 @@
 # Story Completion Application
 
 
-A creative and interactive story completion application powered by OpenAI API. This application allows users to input a story prompt or sentence and generates three unique variations of the story using the power of natural language processing and machine learning.
+A creative and interactive story completion application powered by OpenAI API. This application allows users to input a story prompt or sentence and generates three unique suggestions for the story using the power of natural language processing and machine learning.
 
 ## Features
 
