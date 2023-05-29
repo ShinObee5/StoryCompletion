@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 # Load your API key from an environment variable or secret management service
-openai.api_key = "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"
+openai.api_key = "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"
 
 
 @app.route('/')
@@ -16,17 +16,33 @@ def index():
 
 @app.route('/generate', methods=['POST'])
 def generate():
-    data = request.json
-    story = data.get('prompt', '')
-    
-     # Call OpenAI API to generate the story based on the prompt
-    response = openai.Completion.create(model="text-davinci-003", prompt=story, temperature=0.6)
+    # Get user input from the form
+    story_details = request.json['story-details']
+    genre = request.json['genre']
+    character_name = request.json['character1-name']
+    character_sex = request.json['character1-sex']
+    reader_age = request.json['reader-age']
 
-    generated_story = response['choices'][0]['text']
+    # Generate three stories using OpenAI
+    stories = []
+    # Generate three versions of the story
+    story = f"{story_details}\n\nGenre: {genre}\n\nCharacter: {character_name}, {character_sex}\n\nReader Age: {reader_age}\n"
 
-    # Return the generated story to the user
-    return jsonify({'story': generated_story})
+    generated_stories = []
 
+    # Call OpenAI API to generate the story based on the prompt
+    response1 = openai.Completion.create(model="text-davinci-003", prompt=story, temperature=0.1, max_tokens=4000, top_p=0.1)
+    response2 = openai.Completion.create(model="text-davinci-003", prompt=story, temperature=0.5, max_tokens=4000, top_p=0.5)
+    response3 = openai.Completion.create(model="text-davinci-003", prompt=story, temperature=0.9, max_tokens=4000, top_p=0.9)
+
+    generated_story1 = response1['choices'][0].text.strip()
+    generated_story2 = response2['choices'][0].text.strip()
+    generated_story3 = response3['choices'][0].text.strip()
+
+    stories.extend([generated_story1, generated_story2, generated_story3])
+
+    # Return the generated stories as a JSON response
+    return jsonify({'stories': stories})
 
 if __name__ == '__main__':
     app.run(debug=True)
